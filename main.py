@@ -1,6 +1,5 @@
 import random
 import string
-import os
 
 def UI():
     while True:
