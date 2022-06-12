@@ -1,10 +1,21 @@
 import random
 import string
-import os
+
+'''
+This is the main user interface for my program.
+'''
+
 
 def UI():
     while True:
         print("Welcome to my strong password generator!")
+        print("1. How long would you like your password(minimum 5 characters)?")
+        length = input()
+
+        while not length.isnumeric() or int(length) < 5:
+            print("Password must be an number and at least 5 characters long")
+            length = input()
+
         print("1. Include Symbols(Y/N)?")
         symbol = loop()
         print("2. Include Numbers(Y/N)?")
@@ -13,10 +24,13 @@ def UI():
         lowercase = loop()
         print("4. Include Uppercase(Y/N)?")
         uppercase = loop()
+
+        # This if statement calls UI if none of the parameters are true to create a password
         if not symbol and not numbers and not lowercase and not uppercase:
             UI()
-        password = get_password(15, symbol, numbers, lowercase, uppercase)
+        password = get_password(length, symbol, numbers, lowercase, uppercase)
         print("\nSecure Password: ", password, "\n")
+
 
 def loop():
     while True:
@@ -31,6 +45,12 @@ def get_result(input):
         return True
     else:
         return False
+
+
+'''
+This function tests the given password to ensure that the password includes the correct components expected.
+'''
+
 
 def test_pass(password, symbols, numbers, lowercase, uppercase):
     sym = False
@@ -66,18 +86,24 @@ def test_pass(password, symbols, numbers, lowercase, uppercase):
     else:
         return False
 
-# returns a secure password based on the conditions given
+
+'''
+This function creates a strong random password based on the inputs of the user
+'''
+
+
 def get_password(length, symbols, numbers, lowercase, uppercase):
-    array = [symbols, numbers, lowercase, uppercase]
-    newlist = []
+    list_of_booleans = [symbols, numbers, lowercase, uppercase]
+    final_list = []
     list_of_strings = [string.punctuation, string.digits, string.ascii_lowercase, string.ascii_uppercase]
-    included = [i for i, x in enumerate(array) if x]
+    included = [i for i, x in enumerate(list_of_booleans) if x]
     for i in included:
-        newlist.append(list_of_strings[i])
-    while len(newlist) != 4:
-        newlist.append("")
+        final_list.append(list_of_strings[i])
+    while len(final_list) != 4:
+        final_list.append("")
     while True:
-        password = ''.join([random.choice(newlist[0] + newlist[1] + newlist[2] + newlist[3]) for n in range(length)])
+        password = ''.join(
+            [random.choice(final_list[0] + final_list[1] + final_list[2] + final_list[3]) for n in range(length)])
         if test_pass(password, symbols, numbers, lowercase, uppercase):
             break
     return password
@@ -85,4 +111,3 @@ def get_password(length, symbols, numbers, lowercase, uppercase):
 
 if __name__ == '__main__':
     UI()
-
