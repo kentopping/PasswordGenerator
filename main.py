@@ -13,7 +13,7 @@ def UI():
         length = input()
 
         while not length.isnumeric() or int(length) < 5:
-            print("Password must be an number and at least 5 characters long")
+            print("Password length must be an number and it must be 5 or higher.")
             length = input()
 
         print("1. Include Symbols(Y/N)?")
@@ -59,26 +59,30 @@ def test_pass(password, symbols, numbers, lowercase, uppercase):
     upp = False
     if symbols:
         for i in password:
-            if i.isalnum():
+            if not i.isalnum():
                 sym = True
+                break
     else:
         sym = True
     if numbers:
         for i in password:
             if i.isnumeric():
                 num = True
+                break
     else:
         num = True
     if lowercase:
         for i in password:
             if i.islower():
                 low = True
+                break
     else:
         low = True
     if uppercase:
         for i in password:
             if i.isupper():
                 upp = True
+                break
     else:
         upp = True
     if sym and num and low and upp:
@@ -102,8 +106,9 @@ def get_password(length, symbols, numbers, lowercase, uppercase):
     while len(final_list) != 4:
         final_list.append("")
     while True:
-        password = ''.join(
-            [random.choice(final_list[0] + final_list[1] + final_list[2] + final_list[3]) for n in range(length)])
+        password = ''.join([
+            random.choice(final_list[0] + final_list[1] + final_list[2] + final_list[3]) for n in range(int(length))
+        ])
         if test_pass(password, symbols, numbers, lowercase, uppercase):
             break
     return password
